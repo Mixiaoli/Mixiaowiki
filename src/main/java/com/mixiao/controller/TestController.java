@@ -1,6 +1,7 @@
 package com.mixiao.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,5 +12,10 @@ public class TestController {
     @RequestMapping("/hello") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
     public String hello(){
         return "hello world";
+    }
+
+    @PostMapping("/hello/post") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
+    public String helloPost(String name){
+        return "hello world Post,"+ name;
     }
 }
