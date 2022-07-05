@@ -38,4 +38,4 @@ insert into `ebook` (id,name,description) values (1,'Spring boot','零基础入�
 insert into `ebook` (id,name,description) values (2,'Vue入门','零基础入门Vue开发');
 insert into `ebook` (id,name,description) values (3,'Pthon入门','零基础入门Python开发');
 insert into `ebook` (id,name,description) values (4,'Mysql入门','零基础入门Mysql开发');
-insert into `ebook` (id,name,description) values (5,'Oracle入门','零基础入门Oracle开发');
+insert into `ebook` (id,name,description) values (5,'Oracle入门','零基础入门Oracle开发学习');
