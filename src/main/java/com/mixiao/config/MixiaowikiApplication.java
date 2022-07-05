@@ -1,5 +1,6 @@
 package com.mixiao.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +24,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 //@ComponentScan({"com.mixiao","com.test"}) 扫描多个包
 @ComponentScan("com.mixiao")//去寻找执行com.mixiao下的各种包
+@MapperScan("com.mixiao.mapper")//让系统知道Mapper文件夹是持久层
 @EnableScheduling
 @EnableAsync
 public class MixiaowikiApplication {
