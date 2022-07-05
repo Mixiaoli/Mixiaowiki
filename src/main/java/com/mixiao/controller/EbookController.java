@@ -1,7 +1,8 @@
 package com.mixiao.controller;
 
-import com.mixiao.domain.Ebook;
+import com.mixiao.req.EbookReq;
 import com.mixiao.resp.CommonResp;
+import com.mixiao.resp.EbookResp;
 import com.mixiao.service.EbookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,13 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public CommonResp list(){
+    public CommonResp list(EbookReq req){//req-EbookReq 请求 设置统一请求这样可以写很多不同类型参数
         //要返回CommonResp的统一类型 new他的对象
         /**接口定义的泛型所以他里面也要是list<Ebook>(自定义类型),注入的控制层将掉到的数据返回回来给List
             resp.存储list数据 返回resp
          **/
-        CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookService.list();
+        CommonResp<List<EbookResp>> resp = new CommonResp<>();
+        List<EbookResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }
