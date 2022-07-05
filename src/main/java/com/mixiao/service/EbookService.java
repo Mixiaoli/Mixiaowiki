@@ -5,11 +5,10 @@ import com.mixiao.domain.EbookExample;
 import com.mixiao.mapper.EbookMapper;
 import com.mixiao.req.EbookReq;
 import com.mixiao.resp.EbookResp;
-import org.springframework.beans.BeanUtils;
+import com.mixiao.util.CopyUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service//需要声明服务层才会扫描到
@@ -22,16 +21,19 @@ public class EbookService {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         criteria.andNameLike("%" +req.getName()+ "%");
-        //改返回值
+        //改返回值-实体类转换用for循环
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
-
-        List<EbookResp> respList = new ArrayList<>();
+        //单体
+        /**List<EbookResp> respList = new ArrayList<>();
         for (Ebook ebook : ebookList){
-            EbookResp ebookResp = new EbookResp();
-            ebookResp.setId(ebook.getId());
-            BeanUtils.copyProperties(ebook,ebookResp);
+            //EbookResp ebookResp = new EbookResp();
+            //BeanUtils.copyProperties(ebook,ebookResp);
+            //对象复制
+            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
             respList.add(ebookResp);
-        }
-        return respList;
+        }**/
+        //列表
+        List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
+        return list;
     }
 }
