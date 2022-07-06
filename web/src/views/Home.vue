@@ -46,36 +46,30 @@
   <a-layout-content
       :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
   >
-    <!--内容列表-->
-    <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="listData">
-      <template #footer>
-        <div>
-          <b>ant design vue</b>
-          footer part
-        </div>
-      </template>
-      <template #renderItem="{ item }">
-        <a-list-item key="item.title">
+    <!--内容列表: grid gutter为间距,column一行变三列-->
+    <a-list item-layout="vertical" size="large" :grid="{gutter:20,column:3}":data-source="ebooks">
+      <template #renderItem="{ item }"> <!--item 表示 一个个的数据 可以自定义 自动循环ebooks的数据出来-->
+        <a-list-item key="item.name"><!--访问数据 这边拿name-->
           <template #actions>
           <span v-for="{ type, text } in actions" :key="type">
             <component v-bind:is="type" style="margin-right: 8px" />
             {{ text }}
           </span>
           </template>
-          <template #extra>
+          <template #extra> <!--图片好看-->
             <img
-                width="272"
+
+                width="500"
                 alt="logo"
                 src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
             />
           </template>
           <a-list-item-meta :description="item.description">
             <template #title>
-              <a :href="item.href">{{ item.title }}</a>
+              <a :href="item.href">{{ item.name }}</a>
             </template>
-            <template #avatar><a-avatar :src="item.avatar" /></template>
+            <template #avatar><a-avatar :src="item.cover" /></template>
           </a-list-item-meta>
-          {{ item.content }}
         </a-list-item>
       </template>
     </a-list>
