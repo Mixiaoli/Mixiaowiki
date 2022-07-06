@@ -7,6 +7,7 @@ import com.mixiao.req.EbookReq;
 import com.mixiao.resp.EbookResp;
 import com.mixiao.util.CopyUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -20,7 +21,9 @@ public class EbookService {
     public List<EbookResp> list(EbookReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%" +req.getName()+ "%");
+        if (!ObjectUtils.isEmpty(req.getName())) {
+            criteria.andNameLike("%" + req.getName() + "%");
+        }
         //改返回值-实体类转换用for循环
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
         //单体

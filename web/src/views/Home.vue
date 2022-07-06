@@ -47,7 +47,7 @@
       :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
   >
     <!--内容列表: grid gutter为间距,column一行变三列-->
-    <a-list item-layout="vertical" size="large" :grid="{gutter:20,column:3}":data-source="ebooks">
+    <a-list item-layout="vertical" size="large" :grid="{gutter:20,column:3}" :data-source="ebooks">
       <template #renderItem="{ item }"> <!--item 表示 一个个的数据 可以自定义 自动循环ebooks的数据出来-->
         <a-list-item key="item.name"><!--访问数据 这边拿name-->
           <template #actions>
@@ -55,14 +55,6 @@
             <component v-bind:is="type" style="margin-right: 8px" />
             {{ text }}
           </span>
-          </template>
-          <template #extra> <!--图片好看-->
-            <img
-
-                width="500"
-                alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-            />
           </template>
           <a-list-item-meta :description="item.description">
             <template #title>
@@ -106,7 +98,7 @@ export default defineComponent({
 
       onMounted(()=> {
         console.log("onMounted");
-        axios.get("http://localhost:8081/ebook/list?name=Vue").then((response) => {//获取后端接口数据
+        axios.get("http://localhost:8081/ebook/list").then((response) => {//获取后端接口数据
           const data =response.data;//定义常量data
           ebooks.value=data.content;
           ebooks1.books= data.content;
@@ -132,3 +124,14 @@ export default defineComponent({
   }
 });
 </script>
+
+<!-- #scoped表示当前组件才有用 -->
+<style scoped>
+.ant-avatar {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8%;
+  margin: 5px 0;
+}
+</style>
