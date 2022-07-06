@@ -17,3 +17,6 @@ const icons: any = Icons;
 for (const i in icons) {
     app.component(i, icons[i]);
 }
+//测试多环节是否成功
+console.log('环境',process.env.NODE_ENV);
+console.log('地址',process.env.VUE_APP_SERVER);
