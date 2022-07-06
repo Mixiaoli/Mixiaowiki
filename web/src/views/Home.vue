@@ -97,8 +97,8 @@ export default defineComponent({
       const ebooks1 = reactive({books:[]});//json数据，返回给books这个数组
 
       onMounted(()=> {
-        console.log("onMounted");
-        axios.get("http://localhost:8081/ebook/list").then((response) => {//获取后端接口数据
+        console.log("onMounted222");
+        axios.get("/ebook/list").then((response) => {//获取后端接口数据
           const data =response.data;//定义常量data
           ebooks.value=data.content;
           ebooks1.books= data.content;

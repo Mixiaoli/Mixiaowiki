@@ -3,10 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as Icons from  '@ant-design/icons-vue';
-
 //导入Ant
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
+//配置环境地址
+import axios from 'axios'
+axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 //集成第三方插件Vue都是在main.ts里配置
 //链式代码 改掉
 const app = createApp(App);
