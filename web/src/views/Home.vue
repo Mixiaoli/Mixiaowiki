@@ -11,10 +11,10 @@
         <template #title>
               <span>
                 <user-outlined />
-                subnav
+                发布文章
               </span>
         </template>
-        <a-menu-item key="1">option1</a-menu-item>
+        <a-menu-item key="1">文章列表</a-menu-item>
         <a-menu-item key="2">option2</a-menu-item>
         <a-menu-item key="3">option3</a-menu-item>
         <a-menu-item key="4">option4</a-menu-item>
@@ -23,7 +23,7 @@
         <template #title>
               <span>
                 <laptop-outlined />
-                subnav 2
+                  用户管理
               </span>
         </template>
         <a-menu-item key="5">option5</a-menu-item>
@@ -35,7 +35,7 @@
         <template #title>
               <span>
                 <notification-outlined />
-                subnav 3
+                系统设置
               </span>
         </template>
         <a-menu-item key="9">option9</a-menu-item>
@@ -55,12 +55,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+
 
 export default defineComponent({
   name: 'Home',
   components: {
-    HelloWorld,
   },
 });
 </script>
