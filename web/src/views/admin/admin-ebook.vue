@@ -4,9 +4,22 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <p>
-        <a-button type="primary" @click="add()" size="large">
-          新增
-        </a-button>
+        <a-form layout="inline" :model="param">
+          <a-form-item>
+            <a-input v-model:value="param.name" placeholder="名称">
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+              查询
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="add()">
+              新增
+            </a-button>
+          </a-form-item>
+        </a-form>
       </p>
       <!--列,key id,数据ebook,分页,等待框,分页执行方法-->
       <a-table
@@ -76,6 +89,8 @@ import {message}  from "ant-design-vue";//ant ui 消息组件
 export default defineComponent({
   name: 'AdminEbook',
   setup(){
+    const param = ref();
+    param.value={};
     const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
     const pagination =ref({
       current:1,//当前页
@@ -125,7 +140,8 @@ export default defineComponent({
      axios.get("/ebook/list",{
        params:{
          page:params.page,
-         size:params.size
+         size:params.size,
+         name:param.value.name,//从响应式变量拿来的
        }
      }).then((response) =>{
        loading.value=false;
@@ -193,7 +209,7 @@ export default defineComponent({
           //重新加载列表
           handleQuery({
             page:pagination.value.current,//所在页码
-            size:pagination.value.pageSize//一次显示多少
+            size:pagination.value.pageSize,//一次显示多少
           });
         }
       });
@@ -216,11 +232,13 @@ export default defineComponent({
       });
     });
     return {
+      param,
       ebooks,//表格
       pagination,
       columns,
       loading,
       handleTableChange,
+      handleQuery,
 
       edit,//表单
       add,
