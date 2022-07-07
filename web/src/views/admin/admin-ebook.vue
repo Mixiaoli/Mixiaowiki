@@ -79,7 +79,7 @@ export default defineComponent({
     const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
     const pagination =ref({
       current:1,//当前页
-      pageSize:1001,//分页条数
+      pageSize:10,//分页条数
       total:0
     });
     const loading = ref(false);
@@ -101,7 +101,7 @@ export default defineComponent({
       },
       {
         title:'分类二',
-        dataIndex:'category2id',
+        dataIndex:'category2Id',
       },
       {
         title:'阅读数',
@@ -152,6 +152,7 @@ export default defineComponent({
       modalLoading.value = true;
       //下面那个ebook就是 ebook=ref()绑定到表单的ebook
       axios.post("/ebook/save",ebook.value).then((response) =>{
+        modalLoading.value=false;
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
         if (data.success){
           modalVisible.value=false;
@@ -161,6 +162,8 @@ export default defineComponent({
             page:pagination.value.current,//所在页码
             size:pagination.value.pageSize//一次显示多少
           });
+        }else{
+          message.error(data.message);
         }
       });
     };

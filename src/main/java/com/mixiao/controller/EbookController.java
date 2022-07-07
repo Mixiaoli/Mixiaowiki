@@ -33,7 +33,7 @@ public class EbookController {
     }
     //保存编辑数据
     @PostMapping("/save") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public CommonResp save(@RequestBody EbookSaveReq req){//请求保存参数
+    public CommonResp save(@Valid @RequestBody EbookSaveReq req){//请求保存参数
         //@RequestBody这个注解对应的就是json方式(POST提交)就行我们写这个book，这个是用content-type是appplication/sjon
         CommonResp resp = new CommonResp<>();
         ebookService.save(req);
