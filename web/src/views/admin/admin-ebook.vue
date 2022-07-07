@@ -119,8 +119,8 @@ export default defineComponent({
        const data = response.data;
        ebooks.value = data.content.list;
        //重置分页按钮
-       pagination.value.current = params.page;//一次多少
-       pagination.value.total = data.content.total;//分页
+       pagination.value.current = params.page;//页码
+       pagination.value.total = data.content.total;//页数
 
      });
     };
@@ -133,10 +133,19 @@ export default defineComponent({
     const modalLoading = ref(false);//时间加载
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout(()=>{
-        modalVisible.value=false;
-        modalLoading.value=false;
-      },2000);
+      //下面那个ebook就是 ebook=ref()绑定到表单的ebook
+      axios.post("/ebook/save",ebook.value).then((response) =>{
+        const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
+        if (data.success){
+          modalVisible.value=false;
+          modalLoading.value=false;
+          //重新加载列表
+          handleQuery({
+            page:pagination.value.current,//所在页码
+            size:pagination.value.pageSize//一次显示多少
+          });
+        }
+      });
     };
 
     /**

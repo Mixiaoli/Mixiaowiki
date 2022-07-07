@@ -1,14 +1,13 @@
 package com.mixiao.controller;
 
-import com.mixiao.req.EbookReq;
+import com.mixiao.req.EbookQueryReq;
+import com.mixiao.req.EbookSaveReq;
 import com.mixiao.resp.CommonResp;
-import com.mixiao.resp.EbookResp;
+import com.mixiao.resp.EbookQueryResp;
 import com.mixiao.resp.PageResp;
 import com.mixiao.service.EbookService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -21,14 +20,23 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public CommonResp list(EbookReq req){//req-EbookReq 请求 设置统一请求这样可以写很多不同类型参数
+    public CommonResp list(EbookQueryReq req){//req-EbookReq 请求 设置统一请求这样可以写很多不同类型参数
         //要返回CommonResp的统一类型 new他的对象
         /**接口定义的泛型所以他里面也要是list<Ebook>(自定义类型),注入的控制层将掉到的数据返回回来给List
             resp.存储list数据 返回resp
          **/
-        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
-        PageResp<EbookResp> list = ebookService.list(req);
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
+        PageResp<EbookQueryResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }
+    //保存编辑数据
+    @PostMapping("/save") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
+    public CommonResp save(@RequestBody EbookSaveReq req){//请求保存参数
+        //@RequestBody这个注解对应的就是json方式(POST提交)就行我们写这个book，这个是用content-type是appplication/sjon
+        CommonResp resp = new CommonResp<>();
+        ebookService.save(req);
+        return resp;
+    }
+
 }

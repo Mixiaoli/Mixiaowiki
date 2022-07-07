@@ -1,6 +1,6 @@
 package com.mixiao.req;
 //继承了分页请求参数封装 分页作为父类这样 调用的请求参数就不用改
-public class EbookReq extends PageReq{
+public class EbookQueryReq extends PageReq{
     private Long id;
 
     private String name;

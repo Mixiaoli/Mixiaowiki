@@ -5,8 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.mixiao.domain.Ebook;
 import com.mixiao.domain.EbookExample;
 import com.mixiao.mapper.EbookMapper;
-import com.mixiao.req.EbookReq;
-import com.mixiao.resp.EbookResp;
+import com.mixiao.req.EbookQueryReq;
+import com.mixiao.req.EbookSaveReq;
+import com.mixiao.resp.EbookQueryResp;
 import com.mixiao.resp.PageResp;
 import com.mixiao.util.CopyUtil;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class EbookService {
     @Resource //jdk自带的注入 @Autowired spring自带的
     private EbookMapper ebookMapper;
 
-    public PageResp<EbookResp> list(EbookReq req){
+    public PageResp<EbookQueryResp> list(EbookQueryReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
@@ -46,10 +47,25 @@ public class EbookService {
             respList.add(ebookResp);
         }**/
         //列表
-        List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
-        PageResp<EbookResp> pageResp = new PageResp(); //返回参数
+        List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
+        PageResp<EbookQueryResp> pageResp = new PageResp(); //返回参数
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);
         return pageResp;
+    }
+
+    /**保存方法
+     *
+     */
+    public void save(EbookSaveReq req){
+        Ebook ebook = CopyUtil.copy(req,Ebook.class);//将请求参数变成实体传进来
+        if (ObjectUtils.isEmpty(req.getId())){
+            //新增
+            ebookMapper.insert(ebook);//使用Mybatis,并且使用代码生成器后，就不需要去写sql语句了,都给你写好了
+        }else {
+            //更新
+            ebookMapper.updateByPrimaryKey(ebook);//根据主建来更新
+        }
+
     }
 }
