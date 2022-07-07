@@ -85,6 +85,7 @@
 import { defineComponent,onMounted,ref } from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
 import axios from 'axios';
 import {message}  from "ant-design-vue";//ant ui 消息组件
+import {Tool} from "@/util/tool";
 
 export default defineComponent({
   name: 'AdminEbook',
@@ -187,9 +188,9 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = (receord:any) => {
+    const edit = (record:any) => {
       modalVisible.value=true;
-      ebook.value = receord;
+      ebook.value = Tool.copy(record);
     };
 
     /**
