@@ -71,6 +71,7 @@
 <script lang="ts">
 import { defineComponent,onMounted,ref } from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
 import axios from 'axios';
+import {message}  from "ant-design-vue";//ant ui 消息组件
 
 export default defineComponent({
   name: 'AdminEbook',
@@ -78,7 +79,7 @@ export default defineComponent({
     const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
     const pagination =ref({
       current:1,//当前页
-      pageSize:4,//分页条数
+      pageSize:1001,//分页条数
       total:0
     });
     const loading = ref(false);
@@ -129,11 +130,15 @@ export default defineComponent({
      }).then((response) =>{
        loading.value=false;
        const data = response.data;
+        if (data.success){
+          ebooks.value = data.content.list;
        ebooks.value = data.content.list;
        //重置分页按钮
        pagination.value.current = params.page;//页码
        pagination.value.total = data.content.total;//页数
-
+        }else{
+          message.error(data.message);
+        }
      });
     };
     // -------- 表单 ---------
