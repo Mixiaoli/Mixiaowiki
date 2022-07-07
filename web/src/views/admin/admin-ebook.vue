@@ -93,8 +93,8 @@ export default defineComponent({
        const data = response.data;
        ebooks.value = data.content.list;
        //重置分页按钮
-       pagination.value.current = params.page;
-       pagination.value.total = data.content.total;
+       pagination.value.current = params.page;//一次多少
+       pagination.value.total = data.content.total;//分页
 
      });
     };

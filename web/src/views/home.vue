@@ -71,41 +71,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,onMounted,ref,reactive,toRef } from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
+import { defineComponent,onMounted,ref } from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
 import axios from 'axios';
 
-//内容列表的typescript代码 为listdata初始化24条数据
-const listData: any = [];
+//内容列表的typescript代码 为listdata初始化24条数据 测试用注释吊
+//const listData: any = [];
 
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'https://www.antdv.com/',
-    title: `ant design vue part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
+// for (let i = 0; i < 23; i++) {
+//   listData.push({
+//     href: 'https://www.antdv.com/',
+//     title: `ant design vue part ${i}`,
+//     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+//     description:
+//         'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+//     content:
+//         'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+//   });
+// }
 
 export default defineComponent({
   name: 'Home',
   setup(){
       const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
-      const ebooks1 = reactive({books:[]});//json数据，返回给books这个数组
+      //const ebooks1 = reactive({books:[]});//json数据，返回给books这个数组
 
       onMounted(()=> {
-        axios.get("/ebook/list").then((response) => {//获取后端接口数据
+        axios.get("/ebook/list",{
+          params:{
+            page:1,
+            size:1000
+          }
+        }).then((response) => {//获取后端接口数据
           const data =response.data;//定义常量data
-          ebooks.value=data.content;
-          ebooks1.books= data.content;
+          ebooks.value=data.content.list;
+          //不需要分页
+         // ebooks1.books= data.content;
         });
       })
     return {
         ebooks,
-        ebooks2: toRef(ebooks1,"books"),
-        listData,//内容列表的代码
+        //ebooks2: toRef(ebooks1,"books"),
+        //listData,//内容列表的代码
         pagination:{
         onChange: (page: number) => {
           console.log(page);
