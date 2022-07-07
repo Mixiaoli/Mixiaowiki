@@ -42,6 +42,13 @@
             <version>1.2.70</version>
         </dependency>
 
+        <!--pagehelper 分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.13</version>
+        </dependency>
+
         <!--集成热部署-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
