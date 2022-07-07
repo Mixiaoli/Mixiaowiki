@@ -17,7 +17,8 @@
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
-            <a-button type="primary" @click="edit">
+            <!--一整行的数据-->
+            <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
             <a-button type="primary">
@@ -34,7 +35,24 @@
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >
-    <p>test</p>
+    <!--弹出表单-->
+    <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="封面">
+        <a-input v-model:value="ebook.cover" />
+      </a-form-item>
+      <a-form-item label="名称">
+        <a-input v-model:value="ebook.name" />
+      </a-form-item>
+      <a-form-item label="分类一">
+        <a-input v-model:value="ebook.category1Id" />
+      </a-form-item>
+      <a-form-item label="分类二">
+        <a-input v-model:value="ebook.category2Id" />
+      </a-form-item>
+      <a-form-item label="描述">
+        <a-input v-model:value="ebook.description" type="textarea" />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 
@@ -110,8 +128,9 @@ export default defineComponent({
     /**
      * 数组，[100, 101]对应：前端开发 / Vue
      */
-    const modalVisible = ref(false);
-    const modalLoading = ref(false);
+    const ebook = ref({});//表单
+    const modalVisible = ref(false);//显示弹窗
+    const modalLoading = ref(false);//时间加载
     const handleModalOk = () => {
       modalLoading.value = true;
       setTimeout(()=>{
@@ -123,8 +142,9 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = () => {
+    const edit = (receord:any) => {
       modalVisible.value=true;
+      ebook.value = receord;
     };
     /**
      * 表格点击页码时触发
@@ -151,6 +171,7 @@ export default defineComponent({
 
       edit,
 
+      ebook,//ebook返回到html
       modalVisible,
       modalLoading,
       handleModalOk
