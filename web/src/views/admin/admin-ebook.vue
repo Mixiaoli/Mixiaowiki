@@ -3,6 +3,11 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
+      <p>
+        <a-button type="primary" @click="add()" size="large">
+          新增
+        </a-button>
+      </p>
       <!--列,key id,数据ebook,分页,等待框,分页执行方法-->
       <a-table
           :columns="columns"
@@ -13,7 +18,7 @@
           @change="handleTableChange"
       >
         <template #cover="{text:cover}">
-            <img v-if="cover" :src="cover" alt="avatar"/>
+            <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
@@ -155,6 +160,14 @@ export default defineComponent({
       modalVisible.value=true;
       ebook.value = receord;
     };
+
+    /**
+     * 新增
+     */
+    const add = () => {
+      modalVisible.value=true;
+      ebook.value = {};
+    };
     /**
      * 表格点击页码时触发
      */
@@ -172,14 +185,14 @@ export default defineComponent({
       });
     });
     return {
-      ebooks,
+      ebooks,//表格
       pagination,
       columns,
       loading,
       handleTableChange,
 
-      edit,
-
+      edit,//表单
+      add,
       ebook,//ebook返回到html
       modalVisible,
       modalLoading,
@@ -188,3 +201,14 @@ export default defineComponent({
   }
 });
 </script>
+
+<!-- #scoped表示当前组件才有用 -->
+<style scoped>
+.img-wh {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8%;
+  margin: 5px 0;
+}
+</style>

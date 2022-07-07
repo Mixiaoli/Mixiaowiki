@@ -10,6 +10,7 @@ import com.mixiao.req.EbookSaveReq;
 import com.mixiao.resp.EbookQueryResp;
 import com.mixiao.resp.PageResp;
 import com.mixiao.util.CopyUtil;
+import com.mixiao.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class EbookService {
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);//把代码模板导入进来
     @Resource //jdk自带的注入 @Autowired spring自带的
     private EbookMapper ebookMapper;
+
+    @Resource //jdk自带的注入 @Autowired spring自带的
+    private SnowFlake snowFlake;//实例化
 
     public PageResp<EbookQueryResp> list(EbookQueryReq req){
         EbookExample ebookExample = new EbookExample();
@@ -61,6 +65,7 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(req,Ebook.class);//将请求参数变成实体传进来
         if (ObjectUtils.isEmpty(req.getId())){
             //新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);//使用Mybatis,并且使用代码生成器后，就不需要去写sql语句了,都给你写好了
         }else {
             //更新
