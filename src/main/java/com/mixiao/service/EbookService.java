@@ -7,6 +7,7 @@ import com.mixiao.domain.EbookExample;
 import com.mixiao.mapper.EbookMapper;
 import com.mixiao.req.EbookReq;
 import com.mixiao.resp.EbookResp;
+import com.mixiao.resp.PageResp;
 import com.mixiao.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +23,14 @@ public class EbookService {
     @Resource //jdk自带的注入 @Autowired spring自带的
     private EbookMapper ebookMapper;
 
-    public List<EbookResp> list(EbookReq req){
+    public PageResp<EbookResp> list(EbookReq req){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         //改返回值-实体类转换用for循环
-        PageHelper.startPage(1,3);//使用PageHelper分页插件 1页3条
+        PageHelper.startPage(req.getPage(),req.getSize());//使用PageHelper分页插件 1页3条 改成动态方式获取 需要查多少 请求参数
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -46,6 +47,9 @@ public class EbookService {
         }**/
         //列表
         List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
-        return list;
+        PageResp<EbookResp> pageResp = new PageResp(); //返回参数
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+        return pageResp;
     }
 }
