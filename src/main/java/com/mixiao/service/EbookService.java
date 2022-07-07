@@ -71,6 +71,12 @@ public class EbookService {
             //更新
             ebookMapper.updateByPrimaryKey(ebook);//根据主建来更新
         }
-
+    }
+    /**删除方法
+     *
+     */
+    //删除文章
+    public void delete(Long id){
+            ebookMapper.deleteByPrimaryKey(id);//根据Id
     }
 }

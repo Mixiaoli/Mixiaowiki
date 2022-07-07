@@ -39,4 +39,12 @@ public class EbookController {
         return resp;
     }
 
+    //删除文章
+    @DeleteMapping("/delete/{id}") //id跟下面注解映射
+    public CommonResp delete(@PathVariable Long id){//请求保存参数 @path可以将 URL 中占位符参数绑定到控制器处理方法的入参
+        //@RequestBody这个注解对应的就是json方式(POST提交)就行我们写这个book，这个是用content-type是appplication/sjon
+        CommonResp resp = new CommonResp<>();
+        ebookService.delete(id);
+        return resp;
+    }
 }
