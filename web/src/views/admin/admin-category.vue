@@ -21,11 +21,11 @@
           </a-form-item>
         </a-form>
       </p>
-      <!--列,key id,数据ebook,分页,等待框,分页执行方法-->
+      <!--列,key id,数据category,分页,等待框,分页执行方法-->
       <a-table
           :columns="columns"
           :row-key="record => record.id"
-          :data-source="ebooks"
+          :data-source="categorys"
           :pagination="pagination"
           :loading="loading"
           @change="handleTableChange"
@@ -55,27 +55,21 @@
     </a-layout-content>
   </a-layout>
   <a-modal
-      title="Title"
+      title="分类表单"
       v-model:visible="modalVisible"
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >
     <!--弹出表单-->
-    <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="封面">
-        <a-input v-model:value="ebook.cover" />
-      </a-form-item>
+    <a-form :model="category" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="名称">
-        <a-input v-model:value="ebook.name" />
+        <a-input v-model:value="category.name" />
       </a-form-item>
-      <a-form-item label="分类一">
-        <a-input v-model:value="ebook.category1Id" />
+      <a-form-item label="父分类">
+        <a-input v-model:value="category.parent" />
       </a-form-item>
-      <a-form-item label="分类二">
-        <a-input v-model:value="ebook.category2Id" />
-      </a-form-item>
-      <a-form-item label="描述">
-        <a-input v-model:value="ebook.description" type="textarea" />
+      <a-form-item label="父分类">
+        <a-input v-model:value="category.sort" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -88,11 +82,11 @@ import {message}  from "ant-design-vue";//ant ui 消息组件
 import {Tool} from "@/util/tool";
 
 export default defineComponent({
-  name: 'AdminEbook',
+  name: 'AdminCategory',
   setup(){
     const param = ref();
     param.value={};
-    const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
+    const categorys = ref();//响应式数据 获取的书籍实时反馈到页面上
     const pagination =ref({
       current:1,//当前页
       pageSize:10,//分页条数
@@ -102,30 +96,17 @@ export default defineComponent({
 
     const  columns =[
       {
-        title:'封面',
-        dataIndex:'cover',
-        slots:{customRender:'cover'}
-      },
-      {
         title:'名称',
         dataIndex:'name',
       },
       {
-        title:'分类一',
-        key:'category1id',
-        dataIndex:'category1Id',
+        title:'父分类',
+        key:'parent',
+        dataIndex:'parent',
       },
       {
-        title:'分类二',
-        dataIndex:'category2Id',
-      },
-      {
-        title:'阅读数',
-        dataIndex:'viewCount',
-      },
-      {
-        title: '点赞数',
-        dataIndex: 'voteCount'
+        title:'顺序',
+        dataIndex:'sort',
       },
       {
         title:'Action',
@@ -138,7 +119,7 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
-     axios.get("/ebook/list",{//get获取后端数据,路径已经全局配置main.ts .env.dev
+     axios.get("/category/list",{
        params:{
          page:params.page,
          size:params.size,
@@ -148,8 +129,8 @@ export default defineComponent({
        loading.value=false;
        const data = response.data;
         if (data.success){
-          ebooks.value = data.content.list;
-       ebooks.value = data.content.list;
+          categorys.value = data.content.list;
+       categorys.value = data.content.list;
        //重置分页按钮
        pagination.value.current = params.page;//页码
        pagination.value.total = data.content.total;//页数
@@ -162,13 +143,13 @@ export default defineComponent({
     /**
      * 数组，[100, 101]对应：前端开发 / Vue
      */
-    const ebook = ref({});//表单
+    const category = ref({});//表单
     const modalVisible = ref(false);//显示弹窗
     const modalLoading = ref(false);//时间加载
     const handleModalOk = () => {
       modalLoading.value = true;
-      //下面那个ebook就是 ebook=ref()绑定到表单的ebook
-      axios.post("/ebook/save",ebook.value).then((response) =>{
+      //下面那个category就是 category=ref()绑定到表单的category
+      axios.post("/category/save",category.value).then((response) =>{
         modalLoading.value=false;
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
         if (data.success){
@@ -190,7 +171,7 @@ export default defineComponent({
      */
     const edit = (record:any) => {
       modalVisible.value=true;
-      ebook.value = Tool.copy(record);
+      category.value = Tool.copy(record);
     };
 
     /**
@@ -198,13 +179,13 @@ export default defineComponent({
      */
     const add = () => {
       modalVisible.value=true;
-      ebook.value = {};
+      category.value = {};
     };
     /**
      * 删除
      */
     const handleDelete = (id : number) => {
-      axios.delete("/ebook/delete/" + id ).then((response) =>{
+      axios.delete("/category/delete/" + id ).then((response) =>{
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
         if (data.success){
           //重新加载列表
@@ -234,7 +215,7 @@ export default defineComponent({
     });
     return {
       param,
-      ebooks,//表格
+      categorys,//表格
       pagination,
       columns,
       loading,
@@ -243,7 +224,7 @@ export default defineComponent({
 
       edit,//表单
       add,
-      ebook,//ebook返回到html
+      category,//category返回到html
       modalVisible,
       modalLoading,
       handleModalOk,
