@@ -11,7 +11,7 @@
           <MailOutlined />
           <span>欢迎</span>
         </a-menu-item>
-        <a-sub-menu v-for="item in level1" :key="item.id" :disabled="true">
+        <a-sub-menu v-for="item in level1" :key="item.id" :disabled="false">
           <template v-slot:title>
             <span><user-outlined />{{item.name}}</span>
           </template>
@@ -30,6 +30,7 @@
       <div class="welcome" v-show="isShowWelcome">
         <the-welcome></the-welcome>
       </div>
+
       <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks">
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
