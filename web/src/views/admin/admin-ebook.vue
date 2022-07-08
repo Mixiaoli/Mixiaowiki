@@ -138,6 +138,8 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+      ebooks.value = [];
      axios.get("/ebook/list",{//get获取后端数据,路径已经全局配置main.ts .env.dev
        params:{
          page:params.page,
@@ -149,7 +151,6 @@ export default defineComponent({
        const data = response.data;
         if (data.success){
           ebooks.value = data.content.list;
-       ebooks.value = data.content.list;
        //重置分页按钮
        pagination.value.current = params.page;//页码
        pagination.value.total = data.content.total;//页数
