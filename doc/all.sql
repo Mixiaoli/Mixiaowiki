@@ -39,3 +39,25 @@ insert into `ebook` (id,name,description) values (2,'Vue入门','零基础入门
 insert into `ebook` (id,name,description) values (3,'Pthon入门','零基础入门Python开发');
 insert into `ebook` (id,name,description) values (4,'Mysql入门','零基础入门Mysql开发');
 insert into `ebook` (id,name,description) values (5,'Oracle入门','零基础入门Oracle开发学习');
+#分类
+drop table if exists `category`;
+create table `category`(
+    `id` bigint not null comment  'id',
+    `parent` bigint not null  default  0 comment '父id',
+    `name` varchar(50) not null comment '名称',
+    `sort` int comment '顺序',
+    primary key (`id`)
+)engine=innodb default charset =utf8mb4 comment='分类';
+
+insert into `category` (id, parent, name, sort) values(100,000,'前端开发',100);
+insert into `category` (id, parent, name, sort) values(101,100,'vue',101);
+insert into `category` (id, parent, name, sort) values(102,100,'csss',102);
+insert into `category` (id, parent, name, sort) values(200,000,'Html',200);
+insert into `category` (id, parent, name, sort) values(201,200,'java',201);
+insert into `category` (id, parent, name, sort) values(202,200,'python',202);
+insert into `category` (id, parent, name, sort) values(300,000,'数据库',300);
+insert into `category` (id, parent, name, sort) values(301,300,'mysql',301);
+insert into `category` (id, parent, name, sort) values(302,300,'服务器',302);
+insert into `category` (id, parent, name, sort) values(400,000,'开发工具',400);
+insert into `category` (id, parent, name, sort) values(401,400,'其他',401);
+insert into `category` (id, parent, name, sort) values(402,400,'集成开发',402);

@@ -47,6 +47,7 @@
         <!--<table tableName="content"/>-->
         <!--<table tableName="user"/>-->
         <!-- <table tableName="demo" domainObjectName="Demo"/> 测试generator生成后要注释掉-->
-        <table tableName="ebook" domainObjectName="Ebook"/>
+        <!--<table tableName="ebook" domainObjectName="Ebook"/>-->
+        <table tableName="category"/>
     </context>
 </generatorConfiguration>
