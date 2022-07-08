@@ -10,7 +10,7 @@
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+            <a-button type="primary" @click="handleQuery()">
               查询
             </a-button>
           </a-form-item>
@@ -21,14 +21,13 @@
           </a-form-item>
         </a-form>
       </p>
-      <!--列,key id,数据category,分页,等待框,分页执行方法-->
+      <!--列,key id,数据category,分页,等待框,分页执行方法-->      <!--pagintaion是否要分页 这里是否-->
       <a-table
           :columns="columns"
           :row-key="record => record.id"
           :data-source="categorys"
-          :pagination="pagination"
           :loading="loading"
-          @change="handleTableChange"
+          :pagination="false"
       >
         <template #cover="{text:cover}">
             <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
@@ -87,11 +86,6 @@ export default defineComponent({
     const param = ref();
     param.value={};
     const categorys = ref();//响应式数据 获取的书籍实时反馈到页面上
-    const pagination =ref({
-      current:1,//当前页
-      pageSize:10,//分页条数
-      total:0
-    });
     const loading = ref(false);
 
     const  columns =[
@@ -117,23 +111,13 @@ export default defineComponent({
     /**
      * 数据查询
      **/
-    const handleQuery = (params: any) => {
+    const handleQuery = () => {
       loading.value = true;
-     axios.get("/category/list",{
-       params:{
-         page:params.page,
-         size:params.size,
-         name:param.value.name,//从响应式变量拿来的
-       }
-     }).then((response) =>{
+     axios.get("/category/all",).then((response) =>{
        loading.value=false;
        const data = response.data;
         if (data.success){
-          categorys.value = data.content.list;
-       categorys.value = data.content.list;
-       //重置分页按钮
-       pagination.value.current = params.page;//页码
-       pagination.value.total = data.content.total;//页数
+          categorys.value = data.content;
         }else{
           message.error(data.message);
         }
@@ -156,10 +140,7 @@ export default defineComponent({
           modalVisible.value=false;
           modalLoading.value=false;
           //重新加载列表
-          handleQuery({
-            page:pagination.value.current,//所在页码
-            size:pagination.value.pageSize//一次显示多少
-          });
+          handleQuery();
         }else{
           message.error(data.message);
         }
@@ -189,37 +170,18 @@ export default defineComponent({
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
         if (data.success){
           //重新加载列表
-          handleQuery({
-            page:pagination.value.current,//所在页码
-            size:pagination.value.pageSize,//一次显示多少
-          });
+          handleQuery();
         }
       });
     };
-
-    /**
-     * 表格点击页码时触发
-     */
-    const handleTableChange = (pagination: any) => {
-      console.log("看看自带的分页参数都有啥：" + pagination);
-      handleQuery({
-        page: pagination.current,
-        size: pagination.pageSize
-      });
-    };
     onMounted(() => {
-      handleQuery({
-        page:1,
-        size:pagination.value.pageSize
-      });
+      handleQuery();
     });
     return {
       param,
       categorys,//表格
-      pagination,
       columns,
       loading,
-      handleTableChange,
       handleQuery,
 
       edit,//表单
