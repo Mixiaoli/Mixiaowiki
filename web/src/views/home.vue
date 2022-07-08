@@ -19,17 +19,14 @@
             <MailOutlined /><span>{{child.name}}</span>
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="tip" :disabled="true">
+        <!--<a-menu-item key="tip" :disabled="true">
           <span>以上菜单在分类管理配置</span>
-        </a-menu-item>
+        </a-menu-item>-->
       </a-menu>
     </a-layout-sider>
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <div class="welcome" v-show="isShowWelcome">
-        <the-welcome></the-welcome>
-      </div>
 
       <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks">
         <template #renderItem="{ item }">
@@ -97,7 +94,7 @@ export default defineComponent({
     const level1 =  ref();
     let categorys: any;
     /**
-     * 查询所有分类 树枝结构
+     * 查询所有分类
      **/
     const handleQueryCategory = () => {
       axios.get("/category/all").then((response) => {
@@ -152,7 +149,7 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-      // handleQueryEbook();
+     // handleQueryEbook();
     });
 
     return {
