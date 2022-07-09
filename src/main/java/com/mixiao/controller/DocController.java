@@ -2,8 +2,8 @@ package com.mixiao.controller;
 
 import com.mixiao.req.DocQueryReq;
 import com.mixiao.req.DocSaveReq;
-import com.mixiao.resp.DocQueryResp;
 import com.mixiao.resp.CommonResp;
+import com.mixiao.resp.DocQueryResp;
 import com.mixiao.resp.PageResp;
 import com.mixiao.service.DocService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController //返回字符串 或JSON对象(更多是返回JSON对象)
@@ -49,11 +50,11 @@ public class DocController {
     }
 
     //删除文章
-    @DeleteMapping("/delete/{id}") //id跟下面注解映射
-    public CommonResp delete(@PathVariable Long id){//请求保存参数 @path可以将 URL 中占位符参数绑定到控制器处理方法的入参
-        //@RequestBody这个注解对应的就是json方式(POST提交)就行我们写这个book，这个是用content-type是appplication/sjon
+    @DeleteMapping("/delete/{idsStr}")
+    public CommonResp delete(@PathVariable String idsStr) {
         CommonResp resp = new CommonResp<>();
-        docService.delete(id);
+        List<String> list = Arrays.asList(idsStr.split(","));
+        docService.delete(list);
         return resp;
     }
 }
