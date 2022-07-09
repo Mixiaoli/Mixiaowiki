@@ -61,24 +61,21 @@
   >
     <!--弹出表单-->
     <a-form :model="doc" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="名称">
-        <a-input v-model:value="doc.name" />
-      </a-form-item>
-      <!--下拉菜单-->
-      <a-form-item label="父文档">
-        <a-select
-            v-model:value="doc.parent"
-            ref="select"
-        >
-          <a-select-option :value="0">
-            无
-          </a-select-option>
-          <!--disabled不能选择如果是一样的id-->
-          <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id === c.id">
-            {{c.name}}
-          </a-select-option>
-        </a-select>
-      </a-form-item>
+        <a-form-item label="名称">
+          <a-input v-model:value="doc.name" placeholder="名称"/>
+        </a-form-item>
+        <a-form-item label="父文档">
+          <a-tree-select
+              v-model:value="doc.parent"
+              style="width: 100%"
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :tree-data="treeSelectData"
+              placeholder="请选择父文档"
+              tree-default-expand-all
+              :replaceFields="{title: 'name', key: 'id', value: 'id'}"
+          >
+          </a-tree-select>
+        </a-form-item>
       <a-form-item label="顺序">
         <a-input v-model:value="doc.sort" />
       </a-form-item>
@@ -156,6 +153,9 @@ export default defineComponent({
     /**
      * 数组，[100, 101]对应：前端开发 / Vue
      */
+        // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
+    const treeSelectData = ref();
+    treeSelectData.value = [];
     const doc = ref({});//表单
     const modalVisible = ref(false);//显示弹窗
     const modalLoading = ref(false);//时间加载
@@ -177,11 +177,49 @@ export default defineComponent({
     };
 
     /**
+     * 将某节点及其子孙节点全部置为disabled
+     */
+    const setDisable = (treeSelectData: any, id: any) => {
+      // console.log(treeSelectData, id);
+      // 遍历数组，即遍历某一层节点
+      for (let i = 0; i < treeSelectData.length; i++) {
+        const node = treeSelectData[i];
+        if (node.id === id) {
+          // 如果当前节点就是目标节点
+          console.log("disabled", node);
+          // 将目标节点设置为disabled
+          node.disabled = true;
+
+          // 遍历所有子节点，将所有子节点全部都加上disabled
+          const children = node.children;
+          if (Tool.isNotEmpty(children)) {
+            for (let j = 0; j < children.length; j++) {
+              setDisable(children, children[j].id)
+            }
+          }
+        } else {
+          // 如果当前节点不是目标节点，则到其子节点再找找看。
+          const children = node.children;
+          if (Tool.isNotEmpty(children)) {
+            setDisable(children, id);
+          }
+        }
+      }
+    };
+
+    /**
      * 编辑
      */
     const edit = (record:any) => {
       modalVisible.value=true;
       doc.value = Tool.copy(record);
+
+      // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
+      treeSelectData.value = Tool.copy(level1.value);
+      setDisable(treeSelectData.value, record.id);
+
+      // 为选择树添加一个"无"
+      treeSelectData.value.unshift({id: 0, name: '无'});
     };
 
     /**
@@ -220,7 +258,8 @@ export default defineComponent({
       modalVisible,
       modalLoading,
       handleModalOk,
-      handleDelete
+      handleDelete,
+      treeSelectData
     }
   }
 });
