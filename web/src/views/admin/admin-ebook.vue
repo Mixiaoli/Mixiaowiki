@@ -40,9 +40,8 @@
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <!--整行的数据-->
-
-            <router-link to="/admin/doc">
-              <a-button type="primary" @click="edit(record)">
+            <router-link :to="'/admin/doc?ebookId=' + record.id">
+              <a-button type="primary">
                 文档管理
               </a-button>
             </router-link>
