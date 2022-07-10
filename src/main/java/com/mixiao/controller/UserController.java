@@ -47,6 +47,7 @@ public class UserController {
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody UserSaveReq req) {
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        //md5 digestUtils是spirng 内置的直接使用md5 16进制 32位16进制Md5
         CommonResp resp = new CommonResp<>();
         userService.save(req);
         return resp;
