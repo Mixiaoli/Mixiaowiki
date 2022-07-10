@@ -57,4 +57,12 @@ public class DocController {
         docService.delete(list);
         return resp;
     }
+
+    @GetMapping("/find-content/{id}") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
+    public CommonResp findContent(@PathVariable Long id){//req-DocReq 请求 设置统一请求这样可以写很多不同类型参数
+        CommonResp<String> resp = new CommonResp<>();
+        String content = docService.findContent(id);
+        resp.setContent(content);
+        return resp;
+    }
 }
