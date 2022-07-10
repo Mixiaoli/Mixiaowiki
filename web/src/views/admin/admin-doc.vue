@@ -25,14 +25,14 @@
           </p>
           <!--列,key id,数据doc,分页,等待框,分页执行方法-->      <!--pagintaion是否要分页 这里是否-->
           <a-table
-              v-if="level1.length >0"
+              v-if="level1.length > 0"
               :columns="columns"
               :row-key="record => record.id"
               :data-source="level1"
               :loading="loading"
               :pagination="false"
               size="small"
-              :defaultExpandAllROows="true"
+              :defaultExpandAllRows="true"
           >
             <template #name="{text, record }">
               {{record.sort}} {{text}} <!--text电子书名-->
@@ -181,10 +181,11 @@ export default defineComponent({
      * 数组，[100, 101]对应：前端开发 / Vue
      */
         // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
-    const doc = ref({});//表单
-    doc.value = {
+    const doc = ref();//表单
+    doc.value = {};
+/*    doc.value = {
       ebookId: route.query.ebookId
-    };
+    };*/
     const treeSelectData = ref();
     treeSelectData.value = [];
     const modalVisible = ref(false);//显示弹窗
@@ -194,6 +195,8 @@ export default defineComponent({
 
     const handleSave = () => {
       modalLoading.value = true;
+      doc.value.content = editor.txt.html();
+      console.log(doc.value.content+"!!!!1");
       //下面那个doc就是 doc=ref()绑定到表单的doc
       axios.post("/doc/save",doc.value).then((response) =>{
         modalLoading.value=false;

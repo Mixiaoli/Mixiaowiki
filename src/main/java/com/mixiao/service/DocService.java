@@ -2,8 +2,10 @@ package com.mixiao.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mixiao.domain.Content;
 import com.mixiao.domain.Doc;
 import com.mixiao.domain.DocExample;
+import com.mixiao.mapper.ContentMapper;
 import com.mixiao.mapper.DocMapper;
 import com.mixiao.req.DocQueryReq;
 import com.mixiao.req.DocSaveReq;
@@ -24,6 +26,9 @@ public class DocService {
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);//把代码模板导入进来
     @Resource //jdk自带的注入 @Autowired spring自带的
     private DocMapper docMapper;
+
+    @Resource //jdk自带的注入 @Autowired spring自带的
+    private ContentMapper contentMapper;
 
     @Resource //jdk自带的注入 @Autowired spring自带的
     private SnowFlake snowFlake;//实例化
@@ -73,13 +78,21 @@ public class DocService {
      */
     public void save(DocSaveReq req){
         Doc doc = CopyUtil.copy(req,Doc.class);//将请求参数变成实体传进来
+        Content content = CopyUtil.copy(req,Content.class);//将请求参数变成实体传进来
         if (ObjectUtils.isEmpty(req.getId())){
             //新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);//使用Mybatis,并且使用代码生成器后，就不需要去写sql语句了,都给你写好了
+
+            content.setId(doc.getId());
+            contentMapper.insert(content);
         }else {
             //更新
             docMapper.updateByPrimaryKey(doc);//根据主建来更新
+            int count=contentMapper.updateByPrimaryKeyWithBLOBs(content);//全部字段 大字段
+            if (count == 0){
+                contentMapper.insert(content);
+            }
         }
     }
     /**删除方法
