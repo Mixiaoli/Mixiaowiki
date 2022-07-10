@@ -25,12 +25,14 @@
           </p>
           <!--列,key id,数据doc,分页,等待框,分页执行方法-->      <!--pagintaion是否要分页 这里是否-->
           <a-table
+              v-if="level1.length >0"
               :columns="columns"
               :row-key="record => record.id"
               :data-source="level1"
               :loading="loading"
               :pagination="false"
               size="small"
+              :defaultExpandAllROows="true"
           >
             <template #name="{text, record }">
               {{record.sort}} {{text}} <!--text电子书名-->
@@ -153,6 +155,7 @@ export default defineComponent({
      * }]
      */
     const  level1 =ref();
+    level1.value = [];
     /**
      * 数据查询
      **/
