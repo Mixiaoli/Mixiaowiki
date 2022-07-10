@@ -204,7 +204,7 @@ export default defineComponent({
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
         if (data.success){
           modalVisible.value=false;
-          modalLoading.value=false;
+          message.success("保存成功！");
           //重新加载列表
           handleQuery();
         }else{
@@ -296,6 +296,8 @@ export default defineComponent({
      * 编辑
      */
     const edit = (record:any) => {
+      //清空富文本框
+      editor.txt.html("");
       modalVisible.value=true;
       doc.value = Tool.copy(record);
       handleQueryContent();
@@ -312,6 +314,7 @@ export default defineComponent({
      */
     const add = () => {
       modalVisible.value=true;
+      editor.txt.html("");
       doc.value = {ebookId: route.query.ebookId};
 
       treeSelectData.value = Tool.copy(level1.value);
