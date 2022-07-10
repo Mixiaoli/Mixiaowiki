@@ -76,7 +76,7 @@ public class UserService {
         if (ObjectUtils.isEmpty(req.getId())) {
             User userDB = selectByLoginName(req.getLoginName());
             if (ObjectUtils.isEmpty(userDB)) {
-                // 新增
+                // 新增用户
                 user.setId(snowFlake.nextId());
                 userMapper.insert(user);
             } else {
@@ -122,7 +122,7 @@ public class UserService {
         User userDb = selectByLoginName(req.getLoginName());
         if (ObjectUtils.isEmpty(userDb)) {
             // 用户名不存在
-            LOG.info("用户名不存在, {}", req.getLoginName());
+            LOG.info("用户名不存在！, {}", req.getLoginName());
             throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
         } else {
             if (userDb.getPassword().equals(req.getPassword())) {
