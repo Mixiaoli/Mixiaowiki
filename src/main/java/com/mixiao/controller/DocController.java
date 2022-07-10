@@ -22,10 +22,10 @@ public class DocController {
     @Resource //注入进来
     private DocService docService;
     //@Valid //控制层接收参数在进行绑定注解校验规则的时候出现的异常后抛出
-    @GetMapping("/all") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public CommonResp all(){//req-DocReq 请求 设置统一请求这样可以写很多不同类型参数
+    @GetMapping("/all/{ebookId}") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
+    public CommonResp all(@PathVariable Long ebookId){//req-DocReq 请求 设置统一请求这样可以写很多不同类型参数
         CommonResp<List<DocQueryResp>> resp = new CommonResp<>();
-        List<DocQueryResp> list = docService.all();
+        List<DocQueryResp> list = docService.all(ebookId);
         resp.setContent(list);
         return resp;
     }
