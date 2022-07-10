@@ -88,7 +88,7 @@ public class UserService {
             user.setLoginName(null);
             user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);
-            //Selective user如果有值才会去更新 没有就不更新,进来的时候每次都会清空uull 查的数据库是否有值
+            //Selective user如果有值才会去更新 没有就不更新,进来的时候每次都会清空uull！ 密码清空 查的数据库是否有值
         }
     }
 
