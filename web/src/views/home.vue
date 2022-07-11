@@ -33,6 +33,7 @@
           <a-list-item key="item.name">
             <template #actions>
               <span>
+                <!--is=xxxxx 是图标 图标库里找-->
                 <component v-bind:is="'FileOutlined'" style="margin-right: 8px" />
                 {{ item.docCount }}
               </span>
@@ -162,10 +163,10 @@ export default defineComponent({
         },
         pageSize: 3,
       },
-      // actions: [
-      //   { type: 'StarOutlined', text: '156' },
-      //   { type: 'LikeOutlined', text: '156' },
-      //   { type: 'MessageOutlined', text: '2' },
+       //actions: [
+       //  { type: 'StarOutlined', text: '156' },
+       //  { type: 'LikeOutlined', text: '156' },
+       //  { type: 'MessageOutlined', text: '2' },
       // ],
 
       handleClick,
