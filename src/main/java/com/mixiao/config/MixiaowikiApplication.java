@@ -26,7 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan("com.mixiao")//去寻找执行com.mixiao下的各种包
 @MapperScan("com.mixiao.mapper")//让系统知道Mapper文件夹是持久层
 @EnableScheduling
-@EnableAsync
+@EnableAsync //启动而异步化 另外起一个线程执行后面的内容
 public class MixiaowikiApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MixiaowikiApplication.class);
     public static void main(String[] args) {

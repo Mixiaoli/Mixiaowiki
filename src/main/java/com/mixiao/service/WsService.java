@@ -13,7 +13,7 @@ public class WsService {
     @Resource
     public WebSocketServer webSocketServer;
 
-    @Async
+    @Async//用来做异步
     public void sendInfo(String message, String logId) {
         MDC.put("LOG_ID", logId);
         webSocketServer.sendInfo(message);
