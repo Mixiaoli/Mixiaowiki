@@ -112,21 +112,21 @@ public class UserService {
      * 修改密码
      */
     public void resetPassword(UserResetPasswordReq req) {
-        User user = CopyUtil.copy(req, User.class);
-        userMapper.updateByPrimaryKeySelective(user);
+        User user = CopyUtil.copy(req, User.class);//拷贝成数据库的实体
+        userMapper.updateByPrimaryKeySelective(user);//修改
     }
 
     /**
      * 登录
      */
     public UserLoginResp login(UserLoginReq req) {
-        User userDb = selectByLoginName(req.getLoginName());
-        if (ObjectUtils.isEmpty(userDb)) {
+        User userDb = selectByLoginName(req.getLoginName());//根据名字查
+        if (ObjectUtils.isEmpty(userDb)) {//如果wie空
             // 用户名不存在
             LOG.info("用户名不存在！, {}", req.getLoginName());
-            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);//抛出异常提醒
         } else {
-            if (userDb.getPassword().equals(req.getPassword())) {
+            if (userDb.getPassword().equals(req.getPassword())) {//两个去比较一样证明登陆
                 // 登录成功
                 UserLoginResp userLoginResp = CopyUtil.copy(userDb, UserLoginResp.class);
                 return userLoginResp;

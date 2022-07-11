@@ -256,7 +256,7 @@
       const resetPassword = (record: any) => {
         resetModalVisible.value = true;
         user.value = Tool.copy(record);
-        user.value.password = null;
+        user.value.password = null;//空的
       };
 
       onMounted(() => {
