@@ -23,8 +23,8 @@ export default defineComponent({
     };
     const onMessage = (event: any) => {
       console.log('WebSocket收到消息：', event.data);
-      notification['info']({
-        message: '收到消息',
+      notification['info']({ //右侧弹出框提示
+        message: '收到消息！',
         description: event.data,
       });
     };
