@@ -57,6 +57,8 @@
         </a-form-item>
       </a-form>
     </a-modal>
+
+
   </a-layout-header>
 </template>
 
@@ -107,7 +109,7 @@ export default defineComponent({
 
     // 退出登录
     const logout = () => {
-      console.log("退出登录开始");
+      console.log("退出登录开始!");
       axios.get('/user/logout/' + user.value.token).then((response) => {
         const data = response.data;
         if (data.success) {
