@@ -54,7 +54,7 @@ public class LogAspect {
         LOG.info("请求地址: {} {}", request.getRequestURL().toString(), request.getMethod());
         LOG.info("类名方法: {}.{}", signature.getDeclaringTypeName(), name);
         LOG.info("远程地址: {}", request.getRemoteAddr());
-
+        //获取远程IP
         RequestContext.setRemoteAddr(getRemoteIp(request));
 
         // 打印请求参数

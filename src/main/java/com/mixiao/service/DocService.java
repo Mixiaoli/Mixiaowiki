@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.mixiao.domain.Content;
 import com.mixiao.domain.Doc;
 import com.mixiao.domain.DocExample;
+import com.mixiao.exception.BusinessException;
+import com.mixiao.exception.BusinessExceptionCode;
 import com.mixiao.mapper.ContentMapper;
 import com.mixiao.mapper.DocMapper;
 import com.mixiao.mapper.DocMapperCust;
@@ -13,9 +15,12 @@ import com.mixiao.req.DocSaveReq;
 import com.mixiao.resp.DocQueryResp;
 import com.mixiao.resp.PageResp;
 import com.mixiao.util.CopyUtil;
+import com.mixiao.util.RedisUtil;
+import com.mixiao.util.RequestContext;
 import com.mixiao.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -36,6 +41,12 @@ public class DocService {
 
     @Resource //jdk自带的注入 @Autowired spring自带的
     private SnowFlake snowFlake;//实例化
+    
+    @Resource
+    public RedisUtil redisUtil;
+
+    @Resource
+    public WsService wsService;
 
     public List<DocQueryResp> all(Long ebookId){
         DocExample docExample = new DocExample();
@@ -130,7 +141,7 @@ public class DocService {
     /**
      * 点赞
      */
-    /*public void vote(Long id) {
+    public void vote(Long id) {
         // docMapperCust.increaseVoteCount(id);
         // 远程IP+doc.id作为key，24小时内不能重复
         String ip = RequestContext.getRemoteAddr();
@@ -149,5 +160,5 @@ public class DocService {
 
     public void updateEbookInfo() {
         docMapperCust.updateEbookInfo();
-    }*/
+    }
 }
