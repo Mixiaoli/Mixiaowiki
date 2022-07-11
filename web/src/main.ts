@@ -8,6 +8,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 //配置环境地址
 import axios from 'axios'
+import {Tool} from "@/util/tool";
 axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 
@@ -19,9 +20,16 @@ app.use(store).use(router).use(Antd).mount('#app');
 
 /**
  * axios拦截器
+ * 去store把token拿出来 不为空就加入一个header增加这个token 打印日志
  */
 axios.interceptors.request.use(function (config){
     console.log('请求参数:',config);
+    const token = store.state.user.token;
+    if (Tool.isNotEmpty(token)) {
+        config.headers.token = token;
+        console.log("请求headers增加token:", token);
+    }
+    return config;
     return config;
 },error =>{
     return Promise.reject(error);
