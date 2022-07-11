@@ -9,6 +9,7 @@
       <a-menu-item key="/">
         <router-link to="/">首页</router-link>
       </a-menu-item>
+      <!--user.id 必须有值的化才会显示导航-->
       <a-menu-item key="/admin/user" :style="user.id? {} : {display:'none'}">
         <router-link to="/admin/user">用户管理</router-link>
       </a-menu-item>
