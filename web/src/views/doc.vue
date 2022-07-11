@@ -21,7 +21,7 @@
               <span>阅读数：{{doc.viewCount}}</span> &nbsp; &nbsp;
               <span>点赞数：{{doc.voteCount}}</span>
             </div>
-            <a-divider style="height: 2px; background-color: #9999cc"/>
+            <a-divider style="height: 2px; background-color: #9999cc"/><!--分割线-->
           </div>
           <div class="wangeditor" :innerHTML="html"></div>
           <div class="vote-div">
@@ -97,7 +97,7 @@ export default defineComponent({
           if (Tool.isNotEmpty(level1)) {
             defaultSelectedKeys.value = [level1.value[0].id];
             handleQueryContent(level1.value[0].id);
-            // 初始显示文档信息
+            // 初始显示文档信息.
             doc.value = level1.value[0];
           }
         } else {

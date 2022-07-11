@@ -7,6 +7,7 @@ import com.mixiao.domain.Doc;
 import com.mixiao.domain.DocExample;
 import com.mixiao.mapper.ContentMapper;
 import com.mixiao.mapper.DocMapper;
+import com.mixiao.mapper.DocMapperCust;
 import com.mixiao.req.DocQueryReq;
 import com.mixiao.req.DocSaveReq;
 import com.mixiao.resp.DocQueryResp;
@@ -26,6 +27,9 @@ public class DocService {
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);//把代码模板导入进来
     @Resource //jdk自带的注入 @Autowired spring自带的
     private DocMapper docMapper;
+
+    @Resource
+    private DocMapperCust docMapperCust;
 
     @Resource //jdk自带的注入 @Autowired spring自带的
     private ContentMapper contentMapper;
@@ -83,6 +87,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())){
             //新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);//初始化不能是null  null 无法+1
+            doc.setVoteCount(0);
             docMapper.insert(doc);//使用Mybatis,并且使用代码生成器后，就不需要去写sql语句了,都给你写好了
 
             content.setId(doc.getId());
@@ -110,12 +116,38 @@ public class DocService {
         criteria.andIdIn(ids);
         docMapper.deleteByExample( docExample);//根据Id
     }
-    public String findContent(Long id){
+    public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
-        if (ObjectUtils.isEmpty(content)){
+        // 文档阅读数+1
+        docMapperCust.increaseViewCount(id);
+        if (ObjectUtils.isEmpty(content)) {
             return "";
-        }else {
+        } else {
             return content.getContent();
         }
     }
+
+    /**
+     * 点赞
+     */
+    /*public void vote(Long id) {
+        // docMapperCust.increaseVoteCount(id);
+        // 远程IP+doc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5000)) {
+            docMapperCust.increaseVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
+
+        // 推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        String logId = MDC.get("LOG_ID");
+        wsService.sendInfo("【" + docDb.getName() + "】被点赞！", logId);
+        // rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
+    }
+
+    public void updateEbookInfo() {
+        docMapperCust.updateEbookInfo();
+    }*/
 }
