@@ -7,8 +7,8 @@ import com.mixiao.req.UserResetPasswordReq;
 import com.mixiao.req.UserSaveReq;
 import com.mixiao.resp.CommonResp;
 import com.mixiao.resp.PageResp;
+import com.mixiao.resp.UserLoginResp;
 import com.mixiao.resp.UserQueryResp;
-import com.mixiao.service.UserLoginResp;
 import com.mixiao.service.UserService;
 import com.mixiao.util.SnowFlake;
 import org.slf4j.Logger;
@@ -76,9 +76,9 @@ public class UserController {
 
         Long token = snowFlake.nextId();
         LOG.info("生成单点登录token：{}，并放入redis中", token);
-        userLoginResp.setToken(token.toString());
+        userLoginResp.setToken(token.toString());//token
         redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
-
+        //ops=操作  set 往redis 添加值 转为json字符串 添加到redis
         resp.setContent(userLoginResp);
         return resp;
     }

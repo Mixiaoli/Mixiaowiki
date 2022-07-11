@@ -19,5 +19,14 @@ name=Test
 ###
 GET http://localhost:8081/test/list
 
+###
+
+GET http://localhost:8081/test/redis/set/123/test
+Accept: application/json
+
+###
+
+GET http://localhost:8081/redis/get/1531802187599872
+Accept: application/json
 
 ###

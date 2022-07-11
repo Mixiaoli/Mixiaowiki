@@ -1,16 +1,29 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
+    <div class="logo">Mixiaoli</div>
     <a-menu
         theme="dark"
         mode="horizontal"
         :style="{ lineHeight: '64px' }"
     >
-      <a-menu-item key="/"><router-link to="/">首页</router-link></a-menu-item>
-      <a-menu-item key="/admin/user"><router-link to="/admin/user">用户管理</router-link></a-menu-item>
-      <a-menu-item key="/admin/ebook"><router-link to="/admin/ebook">电子书管理</router-link></a-menu-item>
-      <a-menu-item key="/admin/category"><router-link to="/admin/category">分类管理</router-link></a-menu-item>
-      <a-menu-item key="/about"><router-link to="/about">关于我们</router-link></a-menu-item>
+      <a-menu-item key="/">
+        <router-link to="/">首页</router-link>
+      </a-menu-item>
+      <a-menu-item key="/admin/user" :style="user.id? {} : {display:'none'}">
+        <router-link to="/admin/user">用户管理</router-link>
+      </a-menu-item>
+      <a-menu-item key="/admin/ebook" :style="user.id? {} : {display:'none'}">
+        <router-link to="/admin/ebook">电子书管理</router-link>
+      </a-menu-item>
+      <a-menu-item key="/admin/category" :style="user.id? {} : {display:'none'}">
+        <router-link to="/admin/category">分类管理</router-link>
+      </a-menu-item>
+      <a-menu-item key="/about">
+        <router-link to="/about">关于我们</router-link>
+      </a-menu-item>
+      <a-menu-item key="/aliyun">
+        <router-link to="/aliyun">阿里云优惠</router-link>
+      </a-menu-item>
       <a-popconfirm
           title="确认退出登录?"
           ok-text="是"
@@ -21,14 +34,14 @@
           <span>退出登录</span>
         </a>
       </a-popconfirm>
-      <a class="login-menu" v-show="user.id">
+      <a class="login-menu" v-show="user.id"><!--有值显示你好-->
         <span>您好：{{user.name}}</span>
       </a>
       <a class="login-menu" v-show="!user.id" @click="showLoginModal">
         <span>登录</span>
       </a>
     </a-menu>
-    <!--是否弹出 是否Loading 模态框-->
+    <!--动态 模态框 是否显示 和显示loading-->
     <a-modal
         title="登录"
         v-model:visible="loginModalVisible"
@@ -44,7 +57,6 @@
         </a-form-item>
       </a-form>
     </a-modal>
-
   </a-layout-header>
 </template>
 
@@ -65,8 +77,8 @@ export default defineComponent({
 
     // 用来登录
     const loginUser = ref({
-      loginName: "test",
-      password: "test"
+      loginName: "",
+      password: ""
     });
     const loginModalVisible = ref(false);//是否显示登陆框
     const loginModalLoading = ref(false);
@@ -86,7 +98,7 @@ export default defineComponent({
           loginModalVisible.value = false;
           message.success("登录成功！");
 
-          store.commit("setUser", data.content);
+          store.commit("setUser", data.content);//出发index.ts setUser,用户参数 给store赋值
         } else {
           message.error(data.message);
         }
@@ -123,13 +135,13 @@ export default defineComponent({
 
 <style>
 .logo {
-  width: 120px;
-  height: 31px;
-  /*background: rgba(255, 255, 255, 0.2);*/
-  /*margin: 16px 28px 16px 0;*/
+  width: 160px;
+  height: 81px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px 28px 16px 0;
   float: left;
   color: white;
-  font-size: 18px;
+  font-size: 30px;
 }
 .login-menu {
   float: right;
