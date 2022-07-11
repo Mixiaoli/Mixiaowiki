@@ -54,7 +54,7 @@ return result;
 }
 
 /**
-* 随机生成[len]长度的[radix]进制数
+* 随机生成[len]长度的[radix]进制数 
 * @param len
 * @param radix 默认62
 * @returns {string}
