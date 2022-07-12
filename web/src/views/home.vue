@@ -11,7 +11,7 @@
           <MailOutlined />
           <span>欢迎</span>
         </a-menu-item>
-        <a-sub-menu v-for="item in level1" :key="item.id" :disabled="false">
+        <a-sub-menu v-for="item in level1" :key="item.id" :disabled="true">
           <template v-slot:title>
             <span><user-outlined />{{item.name}}</span>
           </template>
@@ -19,21 +19,22 @@
             <MailOutlined /><span>{{child.name}}</span>
           </a-menu-item>
         </a-sub-menu>
-        <!--<a-menu-item key="tip" :disabled="true">
+        <a-menu-item key="tip" :disabled="true">
           <span>以上菜单在分类管理配置</span>
-        </a-menu-item>-->
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-
+      <div class="welcome" v-show="isShowWelcome">
+        <the-welcome></the-welcome>
+      </div>
       <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks">
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
             <template #actions>
               <span>
-                <!--is=xxxxx 是图标 图标库里找-->
                 <component v-bind:is="'FileOutlined'" style="margin-right: 8px" />
                 {{ item.docCount }}
               </span>
@@ -150,7 +151,7 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-     // handleQueryEbook();
+      // handleQueryEbook();
     });
 
     return {
@@ -163,10 +164,10 @@ export default defineComponent({
         },
         pageSize: 3,
       },
-       //actions: [
-       //  { type: 'StarOutlined', text: '156' },
-       //  { type: 'LikeOutlined', text: '156' },
-       //  { type: 'MessageOutlined', text: '2' },
+      // actions: [
+      //   { type: 'StarOutlined', text: '156' },
+      //   { type: 'LikeOutlined', text: '156' },
+      //   { type: 'MessageOutlined', text: '2' },
       // ],
 
       handleClick,

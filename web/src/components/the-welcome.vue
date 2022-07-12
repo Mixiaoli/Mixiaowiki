@@ -11,6 +11,11 @@
           点击查看：SpringBoot+Vue3
         </a>
       </div>
+      <div>你也想有个WIKI知识库吗？，<b>配套视频课程</b>：
+        <a href="https://coding.imooc.com/class/474.html" target="_blank">
+          《SpringBoot知识体系+Vue3全家桶 前后端分离 实战WIKI知识库系统》
+        </a>
+      </div>
     </div>
 
     <a-row>
@@ -110,6 +115,7 @@
 </template>
 
 <script lang="ts">
+import { LikeOutlined } from '@ant-design/icons-vue';
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios';
 
