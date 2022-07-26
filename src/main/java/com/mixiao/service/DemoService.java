@@ -13,7 +13,7 @@ public class DemoService {
     @Resource //jdk自带的注入 @Autowired spring自带的
     private DemoMapper demoMapper;
 
-    public List<Demo> list(){
+    public List<Demo> list() {
         return demoMapper.selectByExample(null);
     }
 }

@@ -41,14 +41,14 @@ public class DocService {
 
     @Resource //jdk自带的注入 @Autowired spring自带的
     private SnowFlake snowFlake;//实例化
-    
+
     @Resource
     public RedisUtil redisUtil;
 
     @Resource
     public WsService wsService;
 
-    public List<DocQueryResp> all(Long ebookId){
+    public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
         docExample.createCriteria().andEbookIdEqualTo(ebookId);
         docExample.setOrderByClause("sort asc");
@@ -59,14 +59,14 @@ public class DocService {
     }
 
     //查询方法
-    public PageResp<DocQueryResp> list(DocQueryReq req){
+    public PageResp<DocQueryResp> list(DocQueryReq req) {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         //改返回值-实体类转换用for循环
-        PageHelper.startPage(req.getPage(),req.getSize());//使用PageHelper分页插件 1页3条 改成动态方式获取 需要查多少 请求参数
+        PageHelper.startPage(req.getPage(), req.getSize());//使用PageHelper分页插件 1页3条 改成动态方式获取 需要查多少 请求参数
         List<Doc> docList = docMapper.selectByExample(docExample);
 
         PageInfo<Doc> pageInfo = new PageInfo<>(docList);
@@ -89,13 +89,13 @@ public class DocService {
         return pageResp;
     }
 
-    /**保存方法
-     *
+    /**
+     * 保存方法
      */
-    public void save(DocSaveReq req){
-        Doc doc = CopyUtil.copy(req,Doc.class);//将请求参数变成实体传进来
-        Content content = CopyUtil.copy(req,Content.class);//将请求参数变成实体传进来
-        if (ObjectUtils.isEmpty(req.getId())){
+    public void save(DocSaveReq req) {
+        Doc doc = CopyUtil.copy(req, Doc.class);//将请求参数变成实体传进来
+        Content content = CopyUtil.copy(req, Content.class);//将请求参数变成实体传进来
+        if (ObjectUtils.isEmpty(req.getId())) {
             //新增
             doc.setId(snowFlake.nextId());
             doc.setViewCount(0);//初始化不能是null  null 无法+1
@@ -104,29 +104,31 @@ public class DocService {
 
             content.setId(doc.getId());
             contentMapper.insert(content);
-        }else {
+        } else {
             //更新
             docMapper.updateByPrimaryKey(doc);//根据主建来更新
-            int count=contentMapper.updateByPrimaryKeyWithBLOBs(content);//全部字段 大字段
-            if (count == 0){
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);//全部字段 大字段
+            if (count == 0) {
                 contentMapper.insert(content);
             }
         }
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         docMapper.deleteByPrimaryKey(id);
     }
-    /**删除方法
-     *
+
+    /**
+     * 删除方法
      */
     //删除文章
-    public void delete(List<String> ids){
+    public void delete(List<String> ids) {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
         criteria.andIdIn(ids);
-        docMapper.deleteByExample( docExample);//根据Id
+        docMapper.deleteByExample(docExample);//根据Id
     }
+
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
         // 文档阅读数+1

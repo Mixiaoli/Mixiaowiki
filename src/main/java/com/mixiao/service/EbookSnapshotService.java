@@ -12,7 +12,10 @@ public class EbookSnapshotService {
 
     @Resource
     private EbookSnapshotMapperCust ebookSnapshotMapperCust;
-    /**生成快照方法*/
+
+    /**
+     * 生成快照方法
+     */
     public void genSnapshot() {
         ebookSnapshotMapperCust.genSnapshot();
     }

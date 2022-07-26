@@ -2,7 +2,9 @@ package com.mixiao.mapper;
 
 import com.mixiao.domain.Demo;
 import com.mixiao.domain.DemoExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface DemoMapper {

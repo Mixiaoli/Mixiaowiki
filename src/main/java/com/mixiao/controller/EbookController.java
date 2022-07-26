@@ -19,21 +19,23 @@ public class EbookController {
 
     @Resource //注入进来
     private EbookService ebookService;
+
     //@Valid //控制层接收参数在进行绑定注解校验规则的时候出现的异常后抛出
     @GetMapping("/list") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public CommonResp list(@Valid EbookQueryReq req){//req-EbookReq 请求 设置统一请求这样可以写很多不同类型参数
+    public CommonResp list(@Valid EbookQueryReq req) {//req-EbookReq 请求 设置统一请求这样可以写很多不同类型参数
         //要返回CommonResp的统一类型 new他的对象
         /**接口定义的泛型所以他里面也要是list<Ebook>(自定义类型),注入的控制层将掉到的数据返回回来给List
-            resp.存储list数据 返回resp
+         resp.存储list数据 返回resp
          **/
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         PageResp<EbookQueryResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }
+
     //保存编辑数据
     @PostMapping("/save") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public CommonResp save(@Valid @RequestBody EbookSaveReq req){//请求保存参数
+    public CommonResp save(@Valid @RequestBody EbookSaveReq req) {//请求保存参数
         //@RequestBody这个注解对应的就是json方式(POST提交)就行我们写这个book，这个是用content-type是appplication/sjon
         CommonResp resp = new CommonResp<>();
         ebookService.save(req);
@@ -42,7 +44,7 @@ public class EbookController {
 
     //删除文章
     @DeleteMapping("/delete/{id}") //id跟下面注解映射
-    public CommonResp delete(@PathVariable Long id){//请求保存参数 @path可以将 URL 中占位符参数绑定到控制器处理方法的入参
+    public CommonResp delete(@PathVariable Long id) {//请求保存参数 @path可以将 URL 中占位符参数绑定到控制器处理方法的入参
         //@RequestBody这个注解对应的就是json方式(POST提交)就行我们写这个book，这个是用content-type是appplication/sjon
         CommonResp resp = new CommonResp<>();
         ebookService.delete(id);

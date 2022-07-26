@@ -1,11 +1,11 @@
 package com.mixiao.exception;
 
 //运行时异常
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 
     private BusinessExceptionCode code;
 
-    public BusinessException (BusinessExceptionCode code) {
+    public BusinessException(BusinessExceptionCode code) {
         super(code.getDesc());
         this.code = code;
     }

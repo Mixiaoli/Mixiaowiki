@@ -19,7 +19,7 @@ public class DemoController {
     private DemoService demoService;
 
     @GetMapping("/list") //定义URL路径 表示这个接口支持所以请求方式 POST GET...
-    public List<Demo> list(){
+    public List<Demo> list() {
         return demoService.list();
     }
 }

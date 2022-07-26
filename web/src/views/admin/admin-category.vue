@@ -30,7 +30,7 @@
           :pagination="false"
       >
         <template #cover="{text:cover}">
-            <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
+          <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
@@ -62,7 +62,7 @@
     <!--弹出表单-->
     <a-form :model="category" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="名称">
-        <a-input v-model:value="category.name" />
+        <a-input v-model:value="category.name"/>
       </a-form-item>
       <!--下拉菜单-->
       <a-form-item label="父分类">
@@ -80,44 +80,44 @@
         </a-select>
       </a-form-item>
       <a-form-item label="顺序">
-        <a-input v-model:value="category.sort" />
+        <a-input v-model:value="category.sort"/>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent,onMounted,ref } from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
+import {defineComponent, onMounted, ref} from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
 import axios from 'axios';
-import {message}  from "ant-design-vue";//ant ui 消息组件
+import {message} from "ant-design-vue";//ant ui 消息组件
 import {Tool} from "@/util/tool";
 
 export default defineComponent({
   name: 'AdminCategory',
-  setup(){
+  setup() {
     const param = ref();
-    param.value={};
+    param.value = {};
     const categorys = ref();//响应式数据 获取的书籍实时反馈到页面上
     const loading = ref(false);
 
-    const  columns =[
+    const columns = [
       {
-        title:'名称',
-        dataIndex:'name',
+        title: '名称',
+        dataIndex: 'name',
       },
       {
-        title:'父分类',
-        key:'parent',
-        dataIndex:'parent',
+        title: '父分类',
+        key: 'parent',
+        dataIndex: 'parent',
       },
       {
-        title:'顺序',
-        dataIndex:'sort',
+        title: '顺序',
+        dataIndex: 'sort',
       },
       {
-        title:'Action',
+        title: 'Action',
         key: 'action',
-        slots:{customRender:'action'}
+        slots: {customRender: 'action'}
       }
     ];
     /**
@@ -131,28 +131,28 @@ export default defineComponent({
      *   }]
      * }]
      */
-    const  level1 =ref();
+    const level1 = ref();
     /**
      * 数据查询
      **/
     const handleQuery = () => {
       loading.value = true;
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-      level1.value= [];
-     axios.get("/category/all",).then((response) =>{
-       loading.value=false;
-       const data = response.data;
-        if (data.success){
+      level1.value = [];
+      axios.get("/category/all",).then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if (data.success) {
           categorys.value = data.content;
           console.log("原始数组：", categorys.value);
 
           level1.value = [];
           level1.value = Tool.array2Tree(categorys.value, 0);//调用tool.ts做树形结构
           console.log("树形结构：", level1);
-        }else{
+        } else {
           message.error(data.message);
         }
-     });
+      });
     };
     // -------- 表单 ---------
     /**
@@ -164,15 +164,15 @@ export default defineComponent({
     const handleModalOk = () => {
       modalLoading.value = true;
       //下面那个category就是 category=ref()绑定到表单的category
-      axios.post("/category/save",category.value).then((response) =>{
-        modalLoading.value=false;
+      axios.post("/category/save", category.value).then((response) => {
+        modalLoading.value = false;
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
-        if (data.success){
-          modalVisible.value=false;
-          modalLoading.value=false;
+        if (data.success) {
+          modalVisible.value = false;
+          modalLoading.value = false;
           //重新加载列表
           handleQuery();
-        }else{
+        } else {
           message.error(data.message);
         }
       });
@@ -181,8 +181,8 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = (record:any) => {
-      modalVisible.value=true;
+    const edit = (record: any) => {
+      modalVisible.value = true;
       category.value = Tool.copy(record);
     };
 
@@ -190,16 +190,16 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
-      modalVisible.value=true;
+      modalVisible.value = true;
       category.value = {};
     };
     /**
      * 删除
      */
-    const handleDelete = (id : number) => {
-      axios.delete("/category/delete/" + id ).then((response) =>{
+    const handleDelete = (id: number) => {
+      axios.delete("/category/delete/" + id).then((response) => {
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
-        if (data.success){
+        if (data.success) {
           //重新加载列表
           handleQuery();
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mixiao.mapper.TestMapper" ><!--对应持久层接口-->
+<mapper namespace="com.mixiao.mapper.TestMapper"><!--对应持久层接口-->
 
     <select id="list" resultType="com.mixiao.domain.Test"><!--实体类-->
         select `id`, `name`, `password` from `test`

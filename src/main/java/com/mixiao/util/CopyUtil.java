@@ -1,4 +1,5 @@
 package com.mixiao.util;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -30,8 +31,8 @@ public class CopyUtil {
      */
     public static <T> List<T> copyList(List source, Class<T> clazz) {
         List<T> target = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(source)){
-            for (Object c: source) {
+        if (!CollectionUtils.isEmpty(source)) {
+            for (Object c : source) {
                 T obj = copy(c, clazz);
                 target.add(obj);
             }

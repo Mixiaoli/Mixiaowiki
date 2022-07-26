@@ -28,7 +28,7 @@ public class CategoryService {
     @Resource //jdk自带的注入 @Autowired spring自带的
     private SnowFlake snowFlake;//实例化
 
-    public List<CategoryQueryResp> all(){
+    public List<CategoryQueryResp> all() {
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.setOrderByClause("sort asc");
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
@@ -38,14 +38,14 @@ public class CategoryService {
     }
 
     //查询方法
-    public PageResp<CategoryQueryResp> list(CategoryQueryReq req){
+    public PageResp<CategoryQueryResp> list(CategoryQueryReq req) {
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         //改返回值-实体类转换用for循环
-        PageHelper.startPage(req.getPage(),req.getSize());//使用PageHelper分页插件 1页3条 改成动态方式获取 需要查多少 请求参数
+        PageHelper.startPage(req.getPage(), req.getSize());//使用PageHelper分页插件 1页3条 改成动态方式获取 需要查多少 请求参数
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
 
         PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
@@ -68,25 +68,26 @@ public class CategoryService {
         return pageResp;
     }
 
-    /**保存方法
-     *
+    /**
+     * 保存方法
      */
-    public void save(CategorySaveReq req){
-        Category category = CopyUtil.copy(req,Category.class);//将请求参数变成实体传进来
-        if (ObjectUtils.isEmpty(req.getId())){
+    public void save(CategorySaveReq req) {
+        Category category = CopyUtil.copy(req, Category.class);//将请求参数变成实体传进来
+        if (ObjectUtils.isEmpty(req.getId())) {
             //新增
             category.setId(snowFlake.nextId());
             categoryMapper.insert(category);//使用Mybatis,并且使用代码生成器后，就不需要去写sql语句了,都给你写好了
-        }else {
+        } else {
             //更新
             categoryMapper.updateByPrimaryKey(category);//根据主建来更新
         }
     }
-    /**删除方法
-     *
+
+    /**
+     * 删除方法
      */
     //删除文章
-    public void delete(Long id){
-            categoryMapper.deleteByPrimaryKey(id);//根据Id
+    public void delete(Long id) {
+        categoryMapper.deleteByPrimaryKey(id);//根据Id
     }
 }

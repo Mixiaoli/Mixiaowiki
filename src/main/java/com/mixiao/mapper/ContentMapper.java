@@ -2,7 +2,9 @@ package com.mixiao.mapper;
 
 import com.mixiao.domain.Content;
 import com.mixiao.domain.ContentExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ContentMapper {

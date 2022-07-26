@@ -67,36 +67,37 @@
               </a-form-item>
             </a-form>
           </p>
-            <!--弹出表单-->
-            <a-form :model="doc" layout="vertical">
-              <a-form-item>
-                <a-input v-model:value="doc.name" placeholder="名称"/>
-              </a-form-item>
-              <a-form-item label="父文档">
-                <a-tree-select
-                    v-model:value="doc.parent"
-                    style="width: 100%"
-                    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                    :tree-data="treeSelectData"
-                    placeholder="请选择父文档"
-                    tree-default-expand-all
-                    :replaceFields="{title: 'name', key: 'id', value: 'id'}"
-                >
-                </a-tree-select>
-              </a-form-item>
-              <a-form-item label="顺序">
-                <a-input v-model:value="doc.sort" placeholder="顺序"/>
-              </a-form-item>
-              <a-form-item>
-                <a-button type="primary" @click="handlePreviewContent()">
-                  <EyeOutlined /> 内容预览
-                </a-button>
-              </a-form-item>
-              <a-form-item>
-                <div id="content">
-                </div>
-              </a-form-item>
-            </a-form>
+          <!--弹出表单-->
+          <a-form :model="doc" layout="vertical">
+            <a-form-item>
+              <a-input v-model:value="doc.name" placeholder="名称"/>
+            </a-form-item>
+            <a-form-item label="父文档">
+              <a-tree-select
+                  v-model:value="doc.parent"
+                  style="width: 100%"
+                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                  :tree-data="treeSelectData"
+                  placeholder="请选择父文档"
+                  tree-default-expand-all
+                  :replaceFields="{title: 'name', key: 'id', value: 'id'}"
+              >
+              </a-tree-select>
+            </a-form-item>
+            <a-form-item label="顺序">
+              <a-input v-model:value="doc.sort" placeholder="顺序"/>
+            </a-form-item>
+            <a-form-item>
+              <a-button type="primary" @click="handlePreviewContent()">
+                <EyeOutlined/>
+                内容预览
+              </a-button>
+            </a-form-item>
+            <a-form-item> <!--这里就是导入wangditor富文本的代码-->
+              <div id="content">
+              </div>
+            </a-form-item>
+          </a-form>
         </a-col>
       </a-row>
 
@@ -106,12 +107,12 @@
 
     </a-layout-content>
   </a-layout>
-<!--  <a-modal
-      title="文档表单"
-      v-model:visible="modalVisible"
-      :confirm-loading="modalLoading"
-      @ok="handleModalOk"
-  ></a-modal>-->
+  <!--  <a-modal
+        title="文档表单"
+        v-model:visible="modalVisible"
+        :confirm-loading="modalLoading"
+        @ok="handleModalOk"
+    ></a-modal>-->
 </template>
 
 <script lang="ts">
@@ -125,7 +126,7 @@ import E from 'wangeditor';
 
 export default defineComponent({
   name: 'AdminDoc',
-  setup(){
+  setup() {
     const route = useRoute();//导入路由
     console.log("路由：", route);
     console.log("route.path：", route.path);
@@ -135,7 +136,7 @@ export default defineComponent({
     console.log("route.name：", route.name);
     console.log("route.meta：", route.meta);
     const param = ref();
-    param.value={};
+    param.value = {};
     const docs = ref();//响应式数据 获取的书籍实时反馈到页面上
     const loading = ref(false);
 
@@ -143,16 +144,16 @@ export default defineComponent({
     const treeSelectData = ref();
     treeSelectData.value = [];
 
-    const  columns =[
+    const columns = [
       {
-        title:'名称',
-        dataIndex:'name',
-        slots:{customRender:'name'}
+        title: '名称',
+        dataIndex: 'name',
+        slots: {customRender: 'name'}
       },
       {
-        title:'Action',
+        title: 'Action',
         key: 'action',
-        slots:{customRender:'action'}
+        slots: {customRender: 'action'}
       }
 
 
@@ -168,17 +169,17 @@ export default defineComponent({
      *   }]
      * }]
      */
-    const  level1 =ref();
+    const level1 = ref();
     level1.value = [];
     /**
      * 数据查询
      **/
     const handleQuery = () => {
       loading.value = true;
-     axios.get("/doc/all/" + route.query.ebookId ).then((response) =>{
-       loading.value=false;
-       const data = response.data;
-        if (data.success){
+      axios.get("/doc/all/" + route.query.ebookId).then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if (data.success) {
           docs.value = data.content;
           console.log("原始数组：", docs.value);
 
@@ -190,10 +191,10 @@ export default defineComponent({
           treeSelectData.value = Tool.copy(level1.value) || [];
           // 为选择树添加一个"无"
           treeSelectData.value.unshift({id: 0, name: '无'});
-        }else{
+        } else {
           message.error(data.message);
         }
-     });
+      });
     };
 
     // -------- 表单 ---------
@@ -208,22 +209,22 @@ export default defineComponent({
     const modalVisible = ref(false);//显示弹窗
     const modalLoading = ref(false);//时间加载
     const editor = new E('#content');
-    editor.config.zIndex=0;
+    editor.config.zIndex = 0;
 
     const handleSave = () => {
       modalLoading.value = true;
       doc.value.content = editor.txt.html();
-      console.log(doc.value.content+"!!!!1");
+      console.log(doc.value.content + "!!!!1");
       //下面那个doc就是 doc=ref()绑定到表单的doc
-      axios.post("/doc/save",doc.value).then((response) =>{
-        modalLoading.value=false;
+      axios.post("/doc/save", doc.value).then((response) => {
+        modalLoading.value = false;
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
-        if (data.success){
-          modalVisible.value=false;
+        if (data.success) {
+          modalVisible.value = false;
           message.success("保存成功！");
           //重新加载列表
           handleQuery();
-        }else{
+        } else {
           message.error(data.message);
         }
       });
@@ -298,12 +299,12 @@ export default defineComponent({
      * 内容查询
      **/
     const handleQueryContent = () => {
-      axios.get("/doc/find-content/" + doc.value.id).then((response) =>{
-        loading.value=false;
+      axios.get("/doc/find-content/" + doc.value.id).then((response) => {
+        loading.value = false;
         const data = response.data;
-        if (data.success){
+        if (data.success) {
           editor.txt.html(data.content);
-        }else{
+        } else {
           message.error(data.message);
         }
       });
@@ -311,10 +312,10 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = (record:any) => {
+    const edit = (record: any) => {
       //清空富文本框
       editor.txt.html("");
-      modalVisible.value=true;
+      modalVisible.value = true;
       doc.value = Tool.copy(record);
       handleQueryContent();
       // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
@@ -329,7 +330,7 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
-      modalVisible.value=true;
+      modalVisible.value = true;
       editor.txt.html("");
       doc.value = {
         ebookId: route.query.ebookId

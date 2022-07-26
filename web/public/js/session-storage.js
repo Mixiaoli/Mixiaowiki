@@ -1,7 +1,7 @@
 SessionStorage = {
     get: function (key) {
         var v = sessionStorage.getItem(key);
-        if (v && typeof(v) !== "undefined" && v !== "undefined") {
+        if (v && typeof (v) !== "undefined" && v !== "undefined") {
             return JSON.parse(v);
         }
     },

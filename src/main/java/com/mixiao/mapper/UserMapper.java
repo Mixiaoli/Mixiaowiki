@@ -2,7 +2,9 @@ package com.mixiao.mapper;
 
 import com.mixiao.domain.User;
 import com.mixiao.domain.UserExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {

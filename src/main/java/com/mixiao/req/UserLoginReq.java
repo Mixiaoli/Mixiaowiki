@@ -2,6 +2,7 @@ package com.mixiao.req;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+
 //用户登陆校验
 public class UserLoginReq {
     //Notnull会校验null notempty会校验null和""

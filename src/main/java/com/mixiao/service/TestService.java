@@ -13,7 +13,7 @@ public class TestService {
     @Resource //jdk自带的注入 @Autowired spring自带的
     private TestMapper testMapper;
 
-    public List<Test> list(){
+    public List<Test> list() {
         return testMapper.list();
     }
 }

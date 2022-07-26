@@ -2,7 +2,9 @@ package com.mixiao.mapper;
 
 import com.mixiao.domain.EbookSnapshot;
 import com.mixiao.domain.EbookSnapshotExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface EbookSnapshotMapper {

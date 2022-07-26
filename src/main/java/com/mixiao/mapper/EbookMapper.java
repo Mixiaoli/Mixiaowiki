@@ -2,7 +2,9 @@ package com.mixiao.mapper;
 
 import com.mixiao.domain.Ebook;
 import com.mixiao.domain.EbookExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface EbookMapper {

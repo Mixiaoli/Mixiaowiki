@@ -19,6 +19,7 @@ public class RedisUtil {
     /**
      * true：不存在，放一个KEY
      * false：已存在
+     *
      * @param key
      * @param second
      * @return

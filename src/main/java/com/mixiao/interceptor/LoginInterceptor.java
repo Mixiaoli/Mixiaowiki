@@ -25,6 +25,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Resource
     private RedisTemplate redisTemplate;
+
     //进入业务代码的时候进行拦截
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -35,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         // OPTIONS请求不做校验,
         // 前后端分离的架构, 前端会发一个OPTIONS请求先做预检, 对预检请求不做校验
-        if(request.getMethod().toUpperCase().equals("OPTIONS")){
+        if (request.getMethod().toUpperCase().equals("OPTIONS")) {
             return true;
         }
 
@@ -46,18 +47,18 @@ public class LoginInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         LOG.info("登录校验开始，token：{}", token);
         if (token == null || token.isEmpty()) {
-            LOG.info( "token为空，请求被拦截" );
+            LOG.info("token为空，请求被拦截");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
         Object object = redisTemplate.opsForValue().get(token);
         if (object == null) {
-            LOG.warn( "token无效，请求被拦截" );
+            LOG.warn("token无效，请求被拦截");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         } else {
             LOG.info("已登录：{}", object);
-            LoginUserContext.setUser(JSON.parseObject((String) object, UserLoginResp.class));
+           // LoginUserCon text.setUser(JSON.parseObject((String) object, UserLoginResp.class));
             return true;
         }
     }

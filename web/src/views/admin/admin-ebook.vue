@@ -31,11 +31,11 @@
           @change="handleTableChange"
       >
         <template #cover="{text:cover}">
-            <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
+          <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
         </template>
         <!--渲染 text跟record的数据一样-->
         <template v-slot:category="{ text, record }">
-        <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
+          <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
@@ -72,10 +72,10 @@
     <!--弹出表单-->
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="封面">
-        <a-input v-model:value="ebook.cover" />
+        <a-input v-model:value="ebook.cover"/>
       </a-form-item>
       <a-form-item label="名称">
-        <a-input v-model:value="ebook.name" />
+        <a-input v-model:value="ebook.name"/>
       </a-form-item>
       <a-form-item label="分类一">
         <a-cascader
@@ -85,57 +85,57 @@
         />
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="ebook.description" type="textarea" />
+        <a-input v-model:value="ebook.description" type="textarea"/>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent,onMounted,ref } from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
+import {defineComponent, onMounted, ref} from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
 import axios from 'axios';
-import {message}  from "ant-design-vue";//ant ui 消息组件
+import {message} from "ant-design-vue";//ant ui 消息组件
 import {Tool} from "@/util/tool";
 
 export default defineComponent({
   name: 'AdminEbook',
-  setup(){
+  setup() {
     const param = ref();
-    param.value={};
+    param.value = {};
     const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
-    const pagination =ref({
-      current:1,//当前页
-      pageSize:10,//分页条数
-      total:0
+    const pagination = ref({
+      current: 1,//当前页
+      pageSize: 10,//分页条数
+      total: 0
     });
     const loading = ref(false);
 
-    const  columns =[
+    const columns = [
       {
-        title:'封面',
-        dataIndex:'cover',
-        slots:{customRender:'cover'}
+        title: '封面',
+        dataIndex: 'cover',
+        slots: {customRender: 'cover'}
       },
       {
-        title:'名称',
-        dataIndex:'name',
+        title: '名称',
+        dataIndex: 'name',
       },
       {
-        title:'分类',
-        slots:{customRender:'category'}
+        title: '分类',
+        slots: {customRender: 'category'}
       },
       {
-        title:'阅读数',
-        dataIndex:'viewCount',
+        title: '阅读数',
+        dataIndex: 'viewCount',
       },
       {
         title: '点赞数',
         dataIndex: 'voteCount'
       },
       {
-        title:'Action',
+        title: 'Action',
         key: 'action',
-        slots:{customRender:'action'}
+        slots: {customRender: 'action'}
       }
     ];
     /**
@@ -145,24 +145,24 @@ export default defineComponent({
       loading.value = true;
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
       ebooks.value = [];
-     axios.get("/ebook/list",{//get获取后端数据,路径已经全局配置main.ts .env.dev
-       params:{
-         page:params.page,
-         size:params.size,
-         name:param.value.name,//从响应式变量拿来的
-       }
-     }).then((response) =>{
-       loading.value=false;
-       const data = response.data;
-        if (data.success){
+      axios.get("/ebook/list", {//get获取后端数据,路径已经全局配置main.ts .env.dev
+        params: {
+          page: params.page,
+          size: params.size,
+          name: param.value.name,//从响应式变量拿来的
+        }
+      }).then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if (data.success) {
           ebooks.value = data.content.list;
-       //重置分页按钮
-       pagination.value.current = params.page;//页码
-       pagination.value.total = data.content.total;//页数
-        }else{
+          //重置分页按钮
+          pagination.value.current = params.page;//页码
+          pagination.value.total = data.content.total;//页数
+        } else {
           message.error(data.message);
         }
-     });
+      });
     };
     // -------- 表单 ---------
     /**
@@ -177,18 +177,18 @@ export default defineComponent({
       ebook.value.category1Id = categoryIds.value[0];
       ebook.value.category2Id = categoryIds.value[1];
       //下面那个ebook就是 ebook=ref()绑定到表单的ebook
-      axios.post("/ebook/save",ebook.value).then((response) =>{
-        modalLoading.value=false;
+      axios.post("/ebook/save", ebook.value).then((response) => {
+        modalLoading.value = false;
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
-        if (data.success){
-          modalVisible.value=false;
-          modalLoading.value=false;
+        if (data.success) {
+          modalVisible.value = false;
+          modalLoading.value = false;
           //重新加载列表
           handleQuery({
-            page:pagination.value.current,//所在页码
-            size:pagination.value.pageSize//一次显示多少
+            page: pagination.value.current,//所在页码
+            size: pagination.value.pageSize//一次显示多少
           });
-        }else{
+        } else {
           message.error(data.message);
         }
       });
@@ -197,8 +197,8 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = (record:any) => {
-      modalVisible.value=true;
+    const edit = (record: any) => {
+      modalVisible.value = true;
       ebook.value = Tool.copy(record);
       categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
     };
@@ -207,20 +207,20 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
-      modalVisible.value=true;
+      modalVisible.value = true;
       ebook.value = {};
     };
     /**
      * 删除
      */
-    const handleDelete = (id : number) => {
-      axios.delete("/ebook/delete/" + id ).then((response) =>{
+    const handleDelete = (id: number) => {
+      axios.delete("/ebook/delete/" + id).then((response) => {
         const data = response.data;//data = commonResp 返回提交的业务是成功的话success=true
-        if (data.success){
+        if (data.success) {
           //重新加载列表
           handleQuery({
-            page:pagination.value.current,//所在页码
-            size:pagination.value.pageSize,//一次显示多少
+            page: pagination.value.current,//所在页码
+            size: pagination.value.pageSize,//一次显示多少
           });
         }
       });
@@ -237,7 +237,7 @@ export default defineComponent({
       });
     };
 
-    const level1 =  ref();
+    const level1 = ref();
     let categorys: any;
     /**
      * 查询所有分类 树形结构
